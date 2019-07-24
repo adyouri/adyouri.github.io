@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>Understanding Dictionary Comprehensions in Python 3 - Abdelhadi Dyouri</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="/understanding-dictionary-comprehensions-in-python-3.html">
+
+        <meta name="author" content="Abdelhadi Dyouri" />
+        <meta name="description" content="Introduction Dictionary comprehensions is a feature in Python that allows us to create dictionaries based on an iterable in a concise and easy to read manner. The use of dictionary comprehensions is done to limit the lines of code in Python programs, in addition to enhancing readability for a better …" />
+
+        <meta property="og:site_name" content="Abdelhadi Dyouri" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Understanding Dictionary Comprehensions in Python 3"/>
+        <meta property="og:url" content="/understanding-dictionary-comprehensions-in-python-3.html"/>
+        <meta property="og:description" content="Introduction Dictionary comprehensions is a feature in Python that allows us to create dictionaries based on an iterable in a concise and easy to read manner. The use of dictionary comprehensions is done to limit the lines of code in Python programs, in addition to enhancing readability for a better …"/>
+        <meta property="article:published_time" content="2019-07-23" />
+            <meta property="article:section" content="Python" />
+            <meta property="article:author" content="Abdelhadi Dyouri" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.flatly.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+Abdelhadi Dyouri            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="/category/general.html">General</a>
+                        </li>
+                        <li class="active">
+                            <a href="/category/python.html">Python</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<!-- Banner -->
+<!-- End Banner -->
+
+<!-- Content Container -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/understanding-dictionary-comprehensions-in-python-3.html"
+                       rel="bookmark"
+                       title="Permalink to Understanding Dictionary Comprehensions in Python 3">
+                        Understanding Dictionary Comprehensions in Python 3
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2019-07-23T22:20:00+01:00"> Tue 23 July 2019</time>
+    </span>
+
+
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h3>Introduction</h3>
+<p>Dictionary comprehensions is a feature in Python that allows us to create dictionaries based on an <a href="https://docs.python.org/3/glossary.html#term-iterable">iterable</a> in a concise and easy to read manner.</p>
+<p>The use of dictionary comprehensions is done to limit the lines of code in Python programs, in addition to enhancing readability for a better development experience.</p>
+<h2>Dictionary Comprehensions</h2>
+<p>As a reminder, to create a simple dictionary in Python, we use the following syntax:</p>
+<div class="highlight"><pre><span></span><span class="n">numbers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="k">print</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Here, the strings <code>'one'</code> and <code>'two'</code> are called <strong>keys</strong>, while the integers <code>1</code> and <code>2</code> are their respective <strong>values</strong>. For more about dictionaries in Python, see <a href="https://www.digitalocean.com/community/tutorials/understanding-dictionaries-in-python-3">Understanding Dictionaries in Python 3</a>.</p>
+<p>In the code above, we directly supply the keys and their values to the dictionary. With dictionary comprehensions, we can use keys and values from another iterable as follows:</p>
+<div class="highlight"><pre><span></span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+
+<span class="n">numbers_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">}</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">numbers_dict</span><span class="p">)</span>
+</pre></div>
+
+
+<p>As you can see in the second line above, we use a <code>for</code> clause to loop through the <code>numbers</code> list and extract keys and their values from the inner tuples in the list, the first element in each tuple is the key, which is stored each time in the <code>key</code> variable surrounding the <code>for</code> clause, while the second element is its value, which gets stored in the <code>value</code> variable each time we iterate through the iterable list <code>number</code>.</p>
+<p>In the last line, we use the <code>print()</code> function to print the dictionary <code>numbers_dict</code> we created using the dictionary comprehension, the output is as follows:</p>
+<div class="highlight"><pre><span></span><span class="err">{</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="err">}</span>
+</pre></div>
+
+
+<p>If we use a simple for loop instead of a dictionary comprehension, we would have to write the code as follows:</p>
+<div class="highlight"><pre><span></span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+
+<span class="n">numbers_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">:</span>
+    <span class="n">numbers_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">numbers_dict</span><span class="p">)</span>
+</pre></div>
+
+
+<p>We had to start by creating the empty dictionary <code>numbers_dict</code> in the second line using the built-in <code>dict()</code> function, then we iterate through the iterable list <code>numbers</code>. The for loop then goes through the tuples in the list one by one, storing the first item in the <code>key</code> variable, and the second item in the <code>value</code> variable. Each key and value is then added to the <code>numbers_dict</code> dictionary using the assignment operation <code>numbers_dict[key] = value</code>.</p>
+<p>The output of the above code would be the same as the dictionary comprehension we wrote earlier:</p>
+<div class="highlight"><pre><span></span><span class="err">{</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="err">}</span>
+</pre></div>
+
+
+<h2>Modifying Keys and Values in a Dictionary Comprehension</h2>
+<p>We can have any valid Python expression in the dictionary comprehension, this allows us to modify keys and their values so they appear in a certain way on the outputted dictionary. For example, we can use the <code>capitalize()</code> method to capitalize the keys:</p>
+<div class="highlight"><pre><span></span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+
+<span class="n">numbers_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="o">&lt;^&gt;.</span><span class="n">capitalize</span><span class="p">()</span><span class="o">&lt;^&gt;</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">}</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">numbers_dict</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">{</span><span class="s1">&#39;One&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Two&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="err">}</span>
+</pre></div>
+
+
+<p>We can also use the same concept to transform values, for example, we can convert values from integers to strings by using the <code>str()</code> built-in function:</p>
+<div class="highlight"><pre><span></span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+
+<span class="n">numbers_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="o">.</span><span class="n">capitalize</span><span class="p">():</span> <span class="o">&lt;^&gt;</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">&lt;^&gt;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">}</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">numbers_dict</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">{</span><span class="s1">&#39;One&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;Two&#39;</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="err">}</span>
+</pre></div>
+
+
+<h2>Using Functions in Dictionary Comprehensions</h2>
+<p>Similarly, we can define and use a function that receives some input and returns a modified version of it to manipulate keys and values in the resulting dictionary:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">times</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">value</span><span class="o">*</span><span class="n">times</span>
+
+
+<span class="n">shapes</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;stars&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;hashes&#39;</span><span class="p">,</span> <span class="s1">&#39;#&#39;</span><span class="p">)]</span>
+
+<span class="n">shapes_dictionary</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span> <span class="n">duplicate</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+                     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">}</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">shapes_dictionary</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Here, we create a function <code>duplicate()</code> that receives two parameters, <code>value</code> and <code>times</code>, and returns the result of the simple Python operation <code>value*times</code>, for example calling the function <code>duplicate('A', 5)</code> would result in the string <code>'A'</code> being duplicated 5 times, which gives us the string <code>'AAAAA'</code> as a return value. Although this function can also serve as a multiplier when using integers, therefore <code>duplicate(5, 5)</code> returns the result of the multiplication operation <code>5*5</code>, which equals the integer <code>25</code>. However, we will only use this function to duplicate strings in this tutorial.</p>
+<p>Note that we can break the dictionary comprehension into multiple lines to enhance readability with appropriate indentation.</p>
+<p>The created dictionary, <code>shapes_dictionary</code>, will have uppercase keys due to the usage of the <code>upper()</code> method, and the values will be duplicated five times because we called the <code>duplicate()</code> function with the value as a first argument, and the integer <code>5</code> as the duplication variable. The output is as follows:</p>
+<div class="highlight"><pre><span></span><span class="err">{</span><span class="s1">&#39;STARS&#39;</span><span class="p">:</span> <span class="s1">&#39;*****&#39;</span><span class="p">,</span> <span class="s1">&#39;HASHES&#39;</span><span class="p">:</span> <span class="s1">&#39;#####&#39;</span><span class="err">}</span>
+</pre></div>
+
+
+<p>As you can see, we were able to manipulate both keys and values inside the dictionary comprehension.</p>
+<h2>Using Conditionals in Dictionary Comprehensions</h2>
+<p>We can control what keys and what values can appear in the created dictionary using an <code>if</code> statement in the dictionary comprehension. For example, we can restrict the dictionary keys to be only 3 characters long or shorter, and reject any key if it has more than 3 characters:</p>
+<div class="highlight"><pre><span></span><span class="nv">names</span> <span class="o">=</span> [<span class="ss">(</span><span class="s1">&#39;</span><span class="s">John</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Doe</span><span class="s1">&#39;</span><span class="ss">)</span>,
+         <span class="ss">(</span><span class="s1">&#39;</span><span class="s">Bob</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Brown</span><span class="s1">&#39;</span><span class="ss">)</span>,
+         <span class="ss">(</span><span class="s1">&#39;</span><span class="s">Ali</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">David</span><span class="s1">&#39;</span><span class="ss">)</span>,
+         <span class="ss">(</span><span class="s1">&#39;</span><span class="s">Alexander</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Young</span><span class="s1">&#39;</span><span class="ss">)</span>,
+         <span class="ss">(</span><span class="s1">&#39;</span><span class="s">Jennefer</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Armstrong</span><span class="s1">&#39;</span><span class="ss">)</span>,
+         ]
+
+<span class="nv">names_dict</span> <span class="o">=</span> {<span class="nv">firstname</span>: <span class="nv">lastname</span>
+              <span class="k">for</span> <span class="nv">firstname</span>, <span class="nv">lastname</span>
+              <span class="nv">in</span> <span class="nv">names</span>
+              <span class="k">if</span> <span class="nv">len</span><span class="ss">(</span><span class="nv">firstname</span><span class="ss">)</span> <span class="o">&lt;=</span> <span class="mi">3</span>
+              }
+
+<span class="nv">print</span><span class="ss">(</span><span class="nv">names_dict</span><span class="ss">)</span>
+</pre></div>
+
+
+<p>In the above code, we use the condition <code>len(firstname) &lt;= 3</code> to indicate that the resulting dictionary can only have entries where the first name length is equal to or shorter than three characters long. The output is as follows:</p>
+<div class="highlight"><pre><span></span><span class="err">{</span><span class="s1">&#39;Bob&#39;</span><span class="p">:</span> <span class="s1">&#39;Brown&#39;</span><span class="p">,</span> <span class="s1">&#39;Ali&#39;</span><span class="p">:</span> <span class="s1">&#39;David&#39;</span><span class="err">}</span>
+</pre></div>
+
+
+<h2>Using The zip() Function to Create a Two-value Iterable</h2>
+<p>Although we can use any iterable in a dictionary comprehension in order to create a dictionary, it is common practice to rely on an itrable that holds pairs of values, this way we can use one item in the pair as the key, and the other to serve as its value.</p>
+<p>Python provides us with the built-in <code>zip()</code> function that accepts two iterables and combines them into an iterable that holds pairs of values, each item in the pair comes from each of the two iterables that were passed.</p>
+<p>For example, Let's say we have a list <code>firstnames</code> containing first names, and a list <code>lastnames</code> that contains the last names for each item in the other list like so:</p>
+<div class="highlight"><pre><span></span><span class="n">firstnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;Sammy&#39;</span><span class="p">]</span>
+<span class="n">lastnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Doe&#39;</span><span class="p">,</span> <span class="s1">&#39;The Shark&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>We can use the <code>zip()</code> function to <em>zip</em> the two lists, the result will be an iterator that contains several Python tuples, each tuple will have the first name and the last name like so:</p>
+<div class="highlight"><pre><span></span><span class="n">firstnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;Sammy&#39;</span><span class="p">]</span>
+<span class="n">lastnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Doe&#39;</span><span class="p">,</span> <span class="s1">&#39;The Shark&#39;</span><span class="p">]</span>
+
+<span class="n">names</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">firstnames</span><span class="p">,</span> <span class="n">lastnames</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The output will draw a clear picture of how this can be useful in practice:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;Doe&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;Sammy&#39;</span><span class="p">,</span> <span class="s1">&#39;The Shark&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>As you can see, the <code>zip()</code> function is handy when writing a dictionary comprehension that relies on two iterables.</p>
+<p>Here is an example where we use <code>zip()</code> in a dictionary comprehension converting the last name into uppercase letters with the <code>upper()</code> method:</p>
+<div class="highlight"><pre><span></span><span class="n">firstnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;Sammy&#39;</span><span class="p">]</span>
+<span class="n">lastnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Doe&#39;</span><span class="p">,</span> <span class="s1">&#39;The Shark&#39;</span><span class="p">]</span>
+
+<span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="n">firstname</span><span class="p">:</span> <span class="n">lastname</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+         <span class="k">for</span> <span class="n">firstname</span><span class="p">,</span> <span class="n">lastname</span>
+         <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">firstnames</span><span class="p">,</span> <span class="n">lastnames</span><span class="p">)</span>
+         <span class="p">}</span>
+<span class="k">print</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The output is as follows:</p>
+<div class="highlight"><pre><span></span><span class="err">{</span><span class="s1">&#39;John&#39;</span><span class="p">:</span> <span class="s1">&#39;DOE&#39;</span><span class="p">,</span> <span class="s1">&#39;Sammy&#39;</span><span class="p">:</span> <span class="s1">&#39;THE SHARK&#39;</span><span class="err">}</span>
+</pre></div>
+
+
+<h2>Conclusion</h2>
+<p>In this tutorial, we have learned how to use dictionary comprehensions to write more concise and readable Python code.</p>
+<p>However, dictionary comprehensions can sometimes make our code less readable, especially when using long expressions, it is important to maintain readability if a dictionary comprehension is too long by breaking it into multiple parts.</p>
+<p>If you haven't already, see <a href="https://www.digitalocean.com/community/tutorials/understanding-list-comprehensions-in-python-3">List Comprehensions in Python 3</a> tutorial for a similar approach to creating lists.</p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+<!-- Sidebar -->
+<section class="well well-sm">
+  <ul class="list-group list-group-flush">
+
+<!-- Sidebar/Social -->
+<li class="list-group-item">
+  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+  <ul class="list-group" id="social">
+    <li class="list-group-item"><a href="https://github.com/adyouri"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+    <li class="list-group-item"><a href="https://mobile.twitter.com/abdyouri"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+  </ul>
+</li>
+<!-- End Sidebar/Social -->
+
+<!-- Sidebar/Links -->
+<li class="list-group-item">
+  <h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+  <ul class="list-group" id="links">
+    <li class="list-group-item">
+      <a href="http://getpelican.com/" target="_blank">Pelican</a>
+    </li>
+    <li class="list-group-item">
+      <a href="http://python.org/" target="_blank">Python</a>
+    </li>
+  </ul>
+</li>
+<!-- End Sidebar/Links -->
+  </ul>
+</section>
+<!-- End Sidebar -->            </aside>
+        </div>
+    </div>
+</div>
+<!-- End Content Container -->
+
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2019 Abdelhadi Dyouri
+            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+
+
+
+</body>
+</html>
